@@ -1,0 +1,81 @@
+name: 'Github Repo Display in README'
+description: 'Update your profile README with repositories that have the showcase topic'
+author: 'sansk'
+branding:
+  icon: 'star'
+  color: 'blue'
+
+inputs:
+  token:
+    description: 'GitHub token with repo permissions'
+    required: true
+    default: ${{ github.token }}
+  username:
+    description: 'GitHub username to fetch repositories for'
+    required: true
+  topic:
+    description: 'Topic to filter repositories by'
+    required: false
+    default: 'showcase'
+  format:
+    description: 'Output format: list, card, or table'
+    required: false
+    default: 'card'
+  readme_path:
+    description: 'Path to the README file'
+    required: false
+    default: 'README.md'
+  title:
+    description: 'Section title for the showcase projects'
+    required: false
+    default: '🚀 My Projects'
+  max_repos:
+    description: 'Maximum number of repositories to display'
+    required: false
+    default: '10'
+  show_description:
+    description: 'Show repository descriptions'
+    required: false
+    default: 'true'
+  show_language:
+    description: 'Show programming language badges'
+    required: false
+    default: 'true'
+  show_stars:
+    description: 'Show star counts'
+    required: false
+    default: 'true'
+  show_forks:
+    description: 'Show repository forks'
+    required: false
+    default: 'false'
+  show_topics:
+    description: 'Show repository topics'
+    required: false
+    default: 'false'
+  commit_message:
+    description: 'Commit message for README updates'
+    required: false
+    default: 'Update Profile README with Github Projects'
+  start_marker:
+    description: 'Start marker comment for content replacement'
+    required: false
+    default: '<!-- SHOWCASE-START -->'
+  end_marker:
+    description: 'End marker comment for content replacement'
+    required: false
+    default: '<!-- SHOWCASE-END -->'
+  commit_changes:
+    description: 'Whether to commit changes back to the repository'
+    required: false
+    default: 'true'
+
+outputs:
+  repositories_count:
+    description: 'Number of repositories found with the specified topic'
+  updated_content:
+    description: 'The generated showcase content'
+
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
