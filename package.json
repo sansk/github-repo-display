@@ -1,10 +1,14 @@
 {
   "name": "github-repo-display",
   "version": "1.0.0",
-  "description": "🎬 GitHub Action to display repositories that has topics as 'showcase' in profile README",
+  "description": "🎬 GitHub Action to display repositories that has specific topics/tags in profile README",
   "main": "dist/index.js",
   "scripts": {
     "build": "ncc build src/index.ts -o dist --source-map --license licenses.txt",
+    "dev:local": "npm run build && node -r dotenv/config dist/index.js dotenv_config_path=.env.local",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint src/**/*.ts --fix",
     "format": "prettier --write src/**/*.ts",
@@ -28,6 +32,7 @@
     "@octokit/rest": "^22.0.0"
   },
   "devDependencies": {
+    "@types/jest": "^30.0.0",
     "@types/node": "^24.3.0",
     "@typescript-eslint/eslint-plugin": "^8.40.0",
     "@typescript-eslint/parser": "^8.40.0",
@@ -35,7 +40,9 @@
     "eslint": "^9.33.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
+    "jest": "^30.0.5",
     "prettier": "^3.6.2",
+    "ts-jest": "^29.4.1",
     "typescript": "^5.9.2"
   },
   "repository": {
