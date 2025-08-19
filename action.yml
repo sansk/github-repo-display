@@ -44,7 +44,7 @@ inputs:
   show_stars:
     description: 'Show star counts'
     required: false
-    default: 'true'
+    default: 'false'
   show_forks:
     description: 'Show repository forks'
     required: false

@@ -18,7 +18,7 @@
 
 ### 1. Add markers to your README
 
-Add these HTML comments to your `README.md` where you want the showcase projects to appear:
+Add these HTML comments to your `README.md` where you want the projects to appear:
 
 ```markdown
 # Your Profile
@@ -55,23 +55,9 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           username: ${{ github.repository_owner }}
-          topic: { 'portfolio' }
-          format: { 'card' }
-          title: { '🧑‍💻 Personal Projects' }
-          max_repos: { 6 }
-          show_description: { true }
-          show_language: { true }
-          show_stars: { true }
-          show_forks: { true }
-          show_topics: { true }
-          commit_message: { 'Updated README with Github Projects' }
+          topic: 'portfolio'
+          format: 'card'
 ```
-
-Replace the below options:
-
-- **{yourusername}**: Your Github Username. _Required_.
-- **topic**: Replace {'portfolio'} with the tag used to filter repositories. Default is _'showcase'_. _Optional_.
-- **format**: Format to display your repositaries - _card_ or _list_ or _table_. Default is _card_. _Optional_.
 
 ### 3. Tag your repositories
 
@@ -81,3 +67,55 @@ Add the "showcase" topic to repositories you want to feature:
 2. Click the gear icon next to "About"
 3. Add "showcase" to the topics
 4. Save changes
+
+## 📖 Usage
+
+### Basic Usage - With the defaults
+
+```yaml
+- uses: yourusername/showcase-projects-action@v1
+  with:
+    token: ${{ secrets.GITHUB_TOKEN }}
+    username: ${{ github.repository_owner }}
+```
+
+### Advanced Configuration
+
+```yaml
+- uses: yourusername/showcase-projects-action@v1
+  with:
+    token: ${{ secrets.GITHUB_TOKEN }}
+    username: ${{ github.repository_owner }}
+    topic: 'featured'
+    format: 'table'
+    title: '🌟 Featured Projects'
+    max_repos: 12
+    show_description: true
+    show_language: true
+    show_stars: true
+    show_topics: true
+    commit_message: 'docs: update featured projects'
+```
+
+## 🎛️ Configuration Options
+
+| Input              | Description                                | Required | Default                                      |
+| ------------------ | ------------------------------------------ | -------- | -------------------------------------------- |
+| `token`            | GitHub token with repo permissions         | ✅       | `${{ github.token }}`                        |
+| `username`         | GitHub username to fetch repositories      | ✅       | -                                            |
+| `topic`            | Topic to filter repositories by            | ❌       | `showcase`                                   |
+| `format`           | Display format: `card`, `list`, or `table` | ❌       | `card`                                       |
+| `title`            | Section title                              | ❌       | `🚀 My Projects`                             |
+| `max_repos`        | Maximum repositories to display            | ❌       | `10`                                         |
+| `show_description` | Show repository descriptions               | ❌       | `true`                                       |
+| `show_language`    | Show programming language                  | ❌       | `true`                                       |
+| `show_stars`       | Show star counts                           | ❌       | `false`                                      |
+| `show_forks`       | Show fork counts                           | ❌       | `false`                                      |
+| `show_topics`      | Show repository topics                     | ❌       | `false`                                      |
+| `commit_message`   | Commit message for updates                 | ❌       | `Update Profile README with Github Projects` |
+
+#### Notes
+
+- Values should be provided as strings (with quotes) or boolean values
+- The action will only fetch repositories that have the specified topic
+- Maximum of 100 repositories can be displayed
