@@ -1,0 +1,49 @@
+{
+  "name": "github-repo-display",
+  "version": "1.0.0",
+  "description": "🎬 GitHub Action to display repositories that has topics as 'showcase' in profile README",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "ncc build src/index.ts -o dist --source-map --license licenses.txt",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts --fix",
+    "format": "prettier --write src/**/*.ts",
+    "format:check": "prettier --check src/**/*.ts",
+    "prepare": "npm run build",
+    "package": "npm run build && npm prune --production"
+  },
+  "keywords": [
+    "github-action",
+    "readme",
+    "profile",
+    "showcase",
+    "typescript"
+  ],
+  "author": "sansk",
+  "license": "MIT",
+  "type": "commonjs",
+  "dependencies": {
+    "@actions/core": "^1.11.1",
+    "@actions/github": "^6.0.1",
+    "@octokit/rest": "^22.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "@typescript-eslint/eslint-plugin": "^8.40.0",
+    "@typescript-eslint/parser": "^8.40.0",
+    "@vercel/ncc": "^0.38.3",
+    "eslint": "^9.33.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "prettier": "^3.6.2",
+    "typescript": "^5.9.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sansk/github-repo-display.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sansk/github-repo-display/issues"
+  },
+  "homepage": "https://github.com/sansk/github-repo-display#readme"
+}

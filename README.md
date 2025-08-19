@@ -1,2 +1,3 @@
-# github-repo-display
-🎬 GitHub Action to display repositories that has topics as 'showcase' in profile README
+# Github Action: Github Repo Display in README
+
+🎬 A GitHub Action that automatically fetches your repositories with the "showcase" topic and updates your profile README with beautiful displays of your featured projects.
