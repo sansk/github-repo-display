@@ -1,0 +1,36 @@
+name: Update README - Example for 'table' usage
+description: This workflow updates the ./examples/README-Table with a list of projects.
+
+# Run this workflow automatically
+on:
+  schedule: # Run every day at 6 AM UTC
+    - cron: '0 6 * * *'
+  workflow_dispatch: # Allow manual triggering of the workflow
+  push: # Run when repositories are updated
+    branches: [main]
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    name: Update projects in README - Table Example
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update projects
+        uses: sansk/github-repo-display@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          username: ${{ github.repository_owner }}
+          topic: 'showcase'
+          format: 'card'
+          title: '💻 Example Projects - Table'
+          max_repos: 6
+          show_description: true
+          show_language: true
+          show_stars: true
+          readme_path: './examples/README-Table.md'
+          commit_message: 'docs: Update projects in README - Card Example'

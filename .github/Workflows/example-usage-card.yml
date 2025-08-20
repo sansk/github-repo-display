@@ -1,0 +1,40 @@
+name: Update README - Example for 'card' usage
+description: This workflow updates the ./examples/README-Card with a list of projects.
+
+# Run this workflow automatically
+on:
+  schedule: # Run every day at 6 AM UTC
+    - cron: '0 6 * * *'
+  workflow_dispatch: # Allow manual triggering of the workflow
+  push: # Run when repositories are updated
+    branches: [main]
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    name: Update projects in README - Card Example
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update projects
+        uses: sansk/github-repo-display@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          username: ${{ github.repository_owner }}
+          topic: 'showcase'
+          format: 'card'
+          title: '🎴 Example Projects - Card'
+          max_repos: 4
+          show_description: true
+          show_language: true
+          show_stars: true
+          show_topics: true
+          show_forks: true
+          readme_path: './examples/README-Card.md'
+          start_marker: '<!-- START CARD EXAMPLE -->'
+          end_marker: '<!-- END CARD EXAMPLE -->'
+          commit_message: 'docs: Update projects in README - Card Example'
