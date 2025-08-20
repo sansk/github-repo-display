@@ -1,6 +1,10 @@
 import * as fs from 'fs/promises';
 import * as core from '@actions/core';
-import { Octokit } from '@octokit/rest';
+import { Octokit, RestEndpointMethodTypes } from '@octokit/rest';
+
+// Added to avaoid eslinting errors - @typescript-eslint/no-explicit-any
+type CreateOrUpdateFileContentsParams =
+  RestEndpointMethodTypes['repos']['createOrUpdateFileContents']['parameters'];
 
 export class FileService {
   private octokit: Octokit;
@@ -30,7 +34,7 @@ export class FileService {
       await fs.writeFile(filePath, content, 'utf-8');
       core.info(`Successfully wrote README file: ${filePath}`);
     } catch (error) {
-      core.setFailed(`Failed to write README file: ${error}`);
+      core.setFailed(`Failed to write README file: ${(error as Error).message}`);
       throw error;
     }
   }
@@ -41,7 +45,7 @@ export class FileService {
     filePath: string,
     content: string,
     commitMessage: string,
-    branch: string = 'main'
+    branch = 'main'
   ): Promise<void> {
     try {
       // Get current file SHA if it exists
@@ -59,11 +63,23 @@ export class FileService {
         }
       } catch (error) {
         // File doesn't exist, that's okay
-        core.info('README file does not exist in repository. Creating new file.');
+        core.info(
+          'README file does not exist in repository. Creating new file.' + (error as Error).message
+        );
       }
 
       // Create or update the file
-      const requestParams: any = {
+      //   const requestParams: any = {
+      //     owner,
+      //     repo,
+      //     path: filePath,
+      //     message: commitMessage,
+      //     content: Buffer.from(content).toString('base64'),
+      //     branch,
+      //   };
+
+      // Added as a result of eslinting error. - @typescript-eslint/no-explicit-any
+      const requestParams: CreateOrUpdateFileContentsParams = {
         owner,
         repo,
         path: filePath,
@@ -81,7 +97,7 @@ export class FileService {
 
       core.info(`Successfully committed changes to ${filePath}`);
     } catch (error) {
-      core.setFailed(`Failed to commit changes: ${error}`);
+      core.setFailed(`Failed to commit changes: ${(error as Error).message}`);
       throw error;
     }
   }
@@ -101,7 +117,7 @@ Thanks for visiting my profile!
       await fs.mkdir(dirPath, { recursive: true });
     } catch (error) {
       // Directory might already exist, that's fine
-      core.info(`Directory exists!`);
+      core.info(`Directory exists!: ${dirPath} - ` + (error as Error).message);
     }
   }
 }

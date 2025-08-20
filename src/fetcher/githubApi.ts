@@ -51,7 +51,7 @@ export class GitHubApiService {
         updated_at: repo.updated_at ?? new Date().toISOString(),
       }));
     } catch (error) {
-      core.setFailed(`Failed to fetch repositories: ${error}`);
+      core.setFailed(`Failed to fetch repositories: ${(error as Error).message}`);
       throw error;
     }
   }

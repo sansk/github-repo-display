@@ -123,9 +123,7 @@ describe('GitHubApiService', () => {
       await expect(service.getRepositoriesWithTopic('testuser', 'showcase')).rejects.toThrow(
         'API Error'
       );
-      expect(mockedCore.setFailed).toHaveBeenCalledWith(
-        'Failed to fetch repositories: Error: API Error'
-      );
+      expect(mockedCore.setFailed).toHaveBeenCalledWith('Failed to fetch repositories: API Error');
     });
 
     it('should return empty array when no repositories match', async () => {

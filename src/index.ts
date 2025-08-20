@@ -99,7 +99,12 @@ async function run(): Promise<void> {
 
 // Only run if this is the main module
 if (require.main === module) {
-  run();
+  run().catch((error) => {
+    // Added .catch() here
+    core.setFailed(
+      `Action failed outside main catch: ${error instanceof Error ? error.message : String(error)}`
+    );
+  });
 }
 
 export { run };
