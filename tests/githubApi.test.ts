@@ -6,11 +6,12 @@ jest.mock('@actions/core');
 const mockedCore = core as jest.Mocked<typeof core>;
 
 // Mock @octokit/rest
+const mockListForUser = jest.fn();
 jest.mock('@octokit/rest', () => ({
   Octokit: jest.fn().mockImplementation(() => ({
     rest: {
       repos: {
-        listForUser: jest.fn(),
+        listForUser: mockListForUser,
       },
     },
   })),
@@ -18,13 +19,10 @@ jest.mock('@octokit/rest', () => ({
 
 describe('GitHubApiService', () => {
   let service: GitHubApiService;
-  let mockOctokit: any;
 
   beforeEach(() => {
     jest.clearAllMocks();
-
-    const { Octokit } = require('@octokit/rest');
-    mockOctokit = new Octokit();
+    // Initialize the service with a fake token
     service = new GitHubApiService('fake-token');
   });
 
@@ -39,6 +37,8 @@ describe('GitHubApiService', () => {
           language: 'TypeScript',
           stargazers_count: 10,
           topics: ['showcase', 'project'],
+          homepage: null,
+          forks_count: 5,
           updated_at: '2023-01-01T00:00:00Z',
         },
         {
@@ -49,6 +49,8 @@ describe('GitHubApiService', () => {
           language: 'JavaScript',
           stargazers_count: 5,
           topics: ['other-topic'],
+          homepage: 'https://example.com',
+          forks_count: 2,
           updated_at: '2023-01-02T00:00:00Z',
         },
         {
@@ -59,26 +61,30 @@ describe('GitHubApiService', () => {
           language: 'Python',
           stargazers_count: 15,
           topics: ['showcase'],
+          homepage: null,
+          forks_count: 8,
           updated_at: '2023-01-03T00:00:00Z',
         },
       ];
 
-      mockOctokit.rest.repos.listForUser.mockResolvedValue({
+      mockListForUser.mockResolvedValue({
         data: mockRepos,
       });
 
       const result = await service.getRepositoriesWithTopic('testuser', 'showcase');
 
-      expect(mockOctokit.rest.repos.listForUser).toHaveBeenCalledWith({
+      expect(mockListForUser).toHaveBeenCalledWith({
         username: 'testuser',
-        type: 'public',
+        type: 'owner',
         sort: 'updated',
         per_page: 100,
       });
 
       expect(result).toHaveLength(2);
-      expect(result[0].name).toBe('repo1');
-      expect(result[1].name).toBe('repo3');
+
+      expect(result[0]!.name).toBe('repo1');
+      expect(result[1]!.name).toBe('repo3');
+
       expect(mockedCore.info).toHaveBeenCalledWith(
         'Fetching repositories for user: testuser with topic: showcase'
       );
@@ -95,11 +101,13 @@ describe('GitHubApiService', () => {
           language: 'TypeScript',
           stargazers_count: 10,
           topics: null,
+          homepage: null,
+          forks_count: 0,
           updated_at: '2023-01-01T00:00:00Z',
         },
       ];
 
-      mockOctokit.rest.repos.listForUser.mockResolvedValue({
+      mockListForUser.mockResolvedValue({
         data: mockRepos,
       });
 
@@ -110,7 +118,7 @@ describe('GitHubApiService', () => {
 
     it('should handle API errors', async () => {
       const error = new Error('API Error');
-      mockOctokit.rest.repos.listForUser.mockRejectedValue(error);
+      mockListForUser.mockRejectedValue(error);
 
       await expect(service.getRepositoriesWithTopic('testuser', 'showcase')).rejects.toThrow(
         'API Error'
@@ -121,7 +129,7 @@ describe('GitHubApiService', () => {
     });
 
     it('should return empty array when no repositories match', async () => {
-      mockOctokit.rest.repos.listForUser.mockResolvedValue({
+      mockListForUser.mockResolvedValue({
         data: [],
       });
 
