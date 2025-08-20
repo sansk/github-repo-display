@@ -5,6 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "ncc build src/index.ts -o dist --source-map --license licenses.txt",
+    "dev": "node scripts/devTestScript.js",
     "dev:local": "npm run build && node -r dotenv/config dist/index.js dotenv_config_path=.env.local",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -34,11 +35,13 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.33.0",
+    "@types/dotenv": "^6.1.1",
     "@types/jest": "^30.0.0",
     "@types/node": "^24.3.0",
     "@typescript-eslint/eslint-plugin": "^8.40.0",
     "@typescript-eslint/parser": "^8.40.0",
     "@vercel/ncc": "^0.38.3",
+    "dotenv": "^17.2.1",
     "eslint": "^9.33.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
