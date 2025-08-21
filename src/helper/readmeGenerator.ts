@@ -142,10 +142,10 @@ export class ReadmeGenerator {
 
       // Language
       if (options.showLanguage) {
-        const language = repo.language || 'None Detected';
+        const language = repo.language || null;
         const languageWithBadge = language
           ? `<img src="https://img.shields.io/badge/-${encodeURIComponent(language)}-blue?style=flat-square" alt="${repo.language}"/>`
-          : 'N/A';
+          : 'None Detected';
         content += `      <td>${languageWithBadge}</td>\n`;
       }
 
