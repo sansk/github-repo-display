@@ -42,7 +42,7 @@ jobs:
           show_stars: true
           show_topics: true
           show_forks: true
-          readme_path: './examples/README-Card.md'
+          readme_path: 'examples/README-Card.md'
           start_marker: '<!-- START CARD EXAMPLE -->'
           end_marker: '<!-- END CARD EXAMPLE -->'
           commit_message: 'docs: Update projects in README - Card Example'
