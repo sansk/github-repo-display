@@ -136,7 +136,7 @@ export class ReadmeGenerator {
       let description = repo.description || 'No description';
       description = description.length > 150 ? description.slice(0, 150) + '...' : description;
       const homeUrl = repo.homepage
-        ? `<a href="${repo.homepage}" target="_blank"><strong>Live Website</strong></a>`
+        ? `<br><a href="${repo.homepage}" target="_blank"><strong>Live Website</strong></a>`
         : '';
       content += `      <td>${this.escapeHtml(description)} ${homeUrl}</td>\n`;
 
@@ -180,7 +180,8 @@ export class ReadmeGenerator {
   }
 
   private generateCards(repositories: Repository[], options: DisplayOptions): string {
-    let content = '<div align="left">\n\n';
+    let content =
+      '<div style="display: flex; flex-wrap: wrap; justify-content: left; gap: 4px">\n\n';
 
     repositories.forEach((repo, index) => {
       if (index > 0 && index % 2 === 0) {
@@ -196,15 +197,22 @@ export class ReadmeGenerator {
         repo: repo.name,
         theme: 'default',
         show_owner: 'true',
+        description_lines_count: options.showDescription ? '2' : '0',
+        hide: options.showDescription ? '' : 'description',
+        hide_language: options.showLanguage ? 'false' : 'true',
+        show_icons: 'true',
+        show_stars: options.showStars ? 'true' : 'false',
+        show_forks: options.showForks ? 'true' : 'false',
+        show_topics: options.showTopics ? 'true' : 'false',
       });
 
-      if (!options.showDescription) {
-        params.append('hide', 'description');
-      }
+      //   if (!options.showDescription) {
+      //     params.append('hide', 'description');
+      //   }
 
-      if (!options.showLanguage) {
-        params.append('hide_language', 'true');
-      }
+      //   if (!options.showLanguage) {
+      //     params.append('hide_language', 'true');
+      //   }
 
       content += `  <img align="center" src="https://github-readme-stats.vercel.app/api/pin/?${params.toString()}" />\n`;
       content += `</a>\n`;
