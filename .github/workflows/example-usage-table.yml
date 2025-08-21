@@ -9,6 +9,11 @@ on:
   push: # Run when repositories are updated
     branches: [main]
 
+# Add proper permissions
+permissions:
+  contents: write  # Needed to create/update files
+  pull-requests: write  # If using pull requests
+
 jobs:
   update-readme:
     runs-on: ubuntu-latest
@@ -19,6 +24,9 @@ jobs:
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create examples directory if it doesn't exist
+        run: mkdir -p examples
 
       - name: Update projects
         uses: sansk/github-repo-display@v1
@@ -32,5 +40,5 @@ jobs:
           show_description: true
           show_language: true
           show_stars: true
-          readme_path: './examples/README-Table.md'
+          readme_path: 'examples/README-Table.md'
           commit_message: 'docs: Update projects in README - Card Example'
