@@ -1,0 +1,42 @@
+name: Publish new release to GitHub
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["version-bump"]
+    branches: [main]
+    types:
+      - completed
+
+permissions:
+  contents: write
+
+jobs:
+  update-rellease:
+    name: New Github Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set env
+        run: echo "pkg_version=$(awk '/version/{gsub(/("|",)/,"",$2);print $2}' package.json)" >> $GITHUB_ENV
+
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag_name: ${{ env.pkg_version }}
+          name: ${{ env.pkg_version }}
+          body: |
+            -
+          draft: true
+          prerelease: false
+
+      - name: Update v1 release with the latest code
+        run: |
+          git config user.name sansk-grd
+          git config user.email iamsangyk@gmail.com
+          git tag -fa v1 -m "Updated v1 tag with the latest code"
+          git push origin v1 --force

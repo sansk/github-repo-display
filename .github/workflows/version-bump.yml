@@ -1,0 +1,54 @@
+name: version-bump
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Version'
+        required: true
+
+permissions:
+  contents: write
+  
+jobs:
+  version-bump:
+    name: Update dist - Version Bump
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+
+      - name: Install dependancies
+        run: npm ci
+
+      - name: Build the action
+        run: npm run build
+
+      - name: Verify dist directory
+        run: |
+          if [ ! -f dist/index.js ]; then
+            echo "dist/index.js not found!"
+            exit 1
+          fi
+
+      - name: Setup Git
+        run: |
+          git config user.name sansk-grd
+          git config user.email iamsangyk@gmail.com
+
+      - name: Version bump on package.json
+        run: yarn version --new-version ${{ github.event.inputs.tag_name }} --no-git-tag-version
+
+      - name: Commit the changes
+        run: |
+          git add ./dist/index.js ./package.json
+          git commit -m "[skip-ci] Published ${{ github.event.inputs.tag_name }}"
+
+      - name: Push to repository
+        run: git push --quiet
