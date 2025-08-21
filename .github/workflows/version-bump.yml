@@ -43,7 +43,7 @@ jobs:
           git config user.email iamsangyk@gmail.com
 
       - name: Version bump on package.json
-        run: yarn version --new-version ${{ github.event.inputs.tag_name }} --no-git-tag-version
+        run: npm version --no-git-tag-version ${{ github.event.inputs.tag_name }}
 
       - name: Commit the changes
         run: |
