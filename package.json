@@ -1,6 +1,6 @@
 {
   "name": "github-repo-display",
-  "version": "1.0.0",
+  "version": "v1.0.1",
   "description": "🎬 GitHub Action to display repositories that has specific topics/tags in profile README",
   "main": "dist/index.js",
   "scripts": {
