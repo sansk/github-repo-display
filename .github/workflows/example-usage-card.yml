@@ -21,7 +21,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Update projects
-        uses: sansk/github-repo-display@v1
+        uses: sansk/github-repo-display@v1.0.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           username: ${{ github.repository_owner }}
